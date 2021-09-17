@@ -51,13 +51,36 @@ const User = mongoose.model('User', {
   }
 })
 
-//Testing User model
-const me = new User({
-  name: '    Jessica    ',
-  email: '     JESS@GMAIL.COM     ',
-  password: '    jesskbkfvbkbfv     '
+//Task Model
+const Task = mongoose.model('Task', {
+  description: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  completed: {
+    type: Boolean,
+    default: false
+  }
 })
 
-me.save()
-  .then(() => console.log(me))
-  .catch(error => console.log(error))
+//Testing User model
+// const me = new User({
+//   name: '    Jessica    ',
+//   email: '     JESS@GMAIL.COM     ',
+//   password: '    jesskbkfvbkbfv     '
+// })
+
+// me.save()
+//   .then(() => console.log(me))
+//   .catch(error => console.log(error))
+
+//Testing Task Model
+// const tk = new Task({
+//   description: 'Go to Church',
+//   completed: true
+// })
+
+// tk.save()
+//   .then(() => console.log(tk))
+//   .catch(error => console.log(error))
