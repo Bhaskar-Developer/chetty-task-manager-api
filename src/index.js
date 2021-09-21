@@ -22,7 +22,7 @@ app.post('/users', async (req, res) => {
 })
 
 //Fetch all users
-app.get('/users', async (req,res) => {
+app.get('/users', async (req, res) => {
   try {
     const users = await User.find({})
     res.send(users)
@@ -68,6 +68,19 @@ app.patch('/users/:id', async (req, res) => {
   } catch(e) {
     res.status(400).send(e)
   }  
+})
+
+//Delete a user
+app.delete('/users/:id', async (req, res) => {
+  try {
+    const deletedUser = await User.findByIdAndDelete(req.params.id)
+    if(!deletedUser) {
+      return res.status(404).send()
+    }
+    res.send(deletedUser)
+  } catch(e) {
+    res.status(500).send(e)
+  }
 })
 
 //Add a new Task
@@ -127,6 +140,19 @@ app.patch('/tasks/:id', async (req, res) => {
     res.send(updatedTask)
   } catch (e) {
     res.status(400).send(e)
+  }
+})
+
+//Delete a Task
+app.delete('/tasks/:id', async (req, res) => {
+  try {
+    const deletedTask = await Task.findByIdAndDelete(req.params.id)
+    if(!deletedTask) {
+      return res.status(404).send()
+    }
+    res.send(deletedTask)
+  } catch(e) {
+    res.status(500).send(e)
   }
 })
 
