@@ -10,6 +10,7 @@ const userSchema = mongoose.Schema({
   },
   email: {
     type: String,
+    unique: true,
     required: true,
     trim: true,
     lowercase: true,
@@ -46,8 +47,23 @@ const userSchema = mongoose.Schema({
   }
 })
 
-//Run Moongoose Middleware
+//Login the user if he/she is already present in database
+userSchema.statics.findByCredentials = async (email, password) => {
+  //search for user who has the email. If user does not exist with the email then throw error
+  const user = await User.findOne({ email })
+  if(!user) {
+    throw new Error('Unable to Login')
+  }
+  //Login the user if the entered password is same as the one stored in database. If password does not match then throw error 
+  const isMatch = await bcrypt.compare(password, user.password)
+  if(!isMatch) {
+    throw new Error('Unable to Login')
+  }
 
+  return user
+}
+
+//Run Moongoose Middleware
 //1. Hash the password before saving it to the database
 userSchema.pre('save', async function (next) {
   const user = this
