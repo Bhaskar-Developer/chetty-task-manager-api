@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
+const bcrypt = require('bcryptjs')
 
-//User Model
-const User = mongoose.model('User', {
+const userSchema = mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -45,5 +45,18 @@ const User = mongoose.model('User', {
     }
   }
 })
+
+//Run Moongoose Middleware
+
+//1. Hash the password before saving it to the database
+userSchema.pre('save', async function (next) {
+  const user = this
+  if(user.isModified('password')) { //This will run when the user is created/updated
+    user.password = await bcrypt.hash(user.password, 8)
+  }
+  next()
+})
+
+const User = mongoose.model('User', userSchema)
 
 module.exports = User
