@@ -58,6 +58,9 @@ const userSchema = mongoose.Schema({
 userSchema.methods.generateAuthToken = async function() {
   const user = this //this here refers to the current user
   const token = jwt.sign({ _id: user._id.toString() } , 'thisismycourse')
+  //append the generated token to the tokens array of the user and save it to DB
+  user.tokens = user.tokens.concat({ token })
+  await user.save()
   return token
 }
 
