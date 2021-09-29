@@ -32,7 +32,39 @@ router.post('/users/login',async (req, res) => {
   }
 })
 
-//Fetch all users
+//Logout User
+router.post('/users/logout', auth, async (req, res) => {
+  try {
+    //get the tokens array from the logged in user
+    //then remove the current token from the user and save it the user back to the database
+    req.user.tokens = req.user.tokens.filter((token) => {
+      return token.token !== req.token
+    })
+   
+    //save the user after removing the token 
+    await req.user.save()
+
+    res.send()
+  } catch(e) {
+      res.status(500).send()
+  }
+})
+
+//Logout user from all Devices
+router.post('/users/logoutAll', auth, async (req, res) => {
+  try {
+    //Remove all saved tokens from the logged in user
+    req.user.tokens = []
+
+    //save the user back to the database after the tokens are removed
+    await req.user.save()
+
+    res.send()
+  } catch(e) {
+    res.status(500).send()
+  }
+})
+
 //Fetch current user profile
 router.get('/users/me', auth, async (req, res) => {
   res.send(req.user)
