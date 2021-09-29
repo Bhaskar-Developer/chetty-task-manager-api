@@ -54,6 +54,18 @@ const userSchema = mongoose.Schema({
   }]
 })
 
+//Send only public information back after user logs in
+userSchema.methods.toJSON = function() {
+  const user = this //this here is the current instance of the user
+  const userObject = user.toObject()
+
+  //delete the password and tokens array as we dont need to send them
+  delete userObject.tokens
+  delete userObject.password
+
+  return userObject
+}
+
 //Generate Auth Token for user when logging in
 userSchema.methods.generateAuthToken = async function() {
   const user = this //this here refers to the current user

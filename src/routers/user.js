@@ -85,7 +85,7 @@ router.get('/users/:id', async (req, res) => {
 })
 
 //Update a user
-router.patch('/users/:id', async (req, res) => {
+router.patch('/users/me', auth, async (req, res) => {
   //Make sure that the user is allowed to only update valid fields
 
   //Create an array in which the keys are the entries
@@ -98,27 +98,21 @@ router.patch('/users/:id', async (req, res) => {
     })
   }
   try {
-    const user = await User.findById(req.params.id)
-    updates.forEach((update) => user[update] = req.body[update])
-    await user.save()
-
-    if(!user) {
-      return res.status(404).send()
-    }
-    res.send(user)
+    updates.forEach((update) => req.user[update] = req.body[update])
+    await req.user.save()
+    res.send()
   } catch(e) {
     res.status(400).send(e)
   }  
 })
 
 //Delete a user
-router.delete('/users/:id', async (req, res) => {
+router.delete('/users/me', auth, async (req, res) => {
   try {
-    const deletedUser = await User.findByIdAndDelete(req.params.id)
-    if(!deletedUser) {
-      return res.status(404).send()
-    }
-    res.send(deletedUser)
+    //Delete the user from Database
+    await req.user.remove()
+    //Send back the deleted user as response
+    res.send(req.user)
   } catch(e) {
     res.status(500).send(e)
   }
