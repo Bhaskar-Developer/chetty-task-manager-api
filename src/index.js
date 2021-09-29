@@ -4,6 +4,21 @@ const userRouter = require('./routers/user')
 const taskRouter = require('./routers/task')
 const app = express()
 
+//Express Middleware
+// app.use((req, res, next) => {
+//   if(req.method === 'GET') {
+//     return res.send('GET requests are disabled!')
+//   }
+//   next()
+// })
+
+
+//Maintainance Middleware Function
+// app.use((req, res, next) => {
+//   res.status(503).send('The Website is under maintainance. Please come back later!')
+// })
+
+
 app.use(express.json())
 app.use(userRouter)
 app.use(taskRouter) 
@@ -24,4 +39,4 @@ const myFunction = async() => {
   console.log(data)
 }
 
-myFunction()
+//myFunction()
