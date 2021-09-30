@@ -54,6 +54,14 @@ const userSchema = mongoose.Schema({
   }]
 })
 
+//Adding tasks as a Virtual Field for User. 
+//This tasks field will store list of all tasks associated with a user
+userSchema.virtual('tasks', {
+  ref: 'Task',
+  localField: '_id',
+  foreignField: 'owner'
+})
+
 //Send only public information back after user logs in
 userSchema.methods.toJSON = function() {
   const user = this //this here is the current instance of the user
