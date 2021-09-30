@@ -53,6 +53,8 @@ const userSchema = mongoose.Schema({
       required: true 
     }
   }]
+}, {
+  timestamps: true
 })
 
 //Adding tasks as a Virtual Field for User. 

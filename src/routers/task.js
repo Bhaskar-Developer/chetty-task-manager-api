@@ -18,16 +18,30 @@ router.post('/tasks', auth, async (req, res) => {
 })
 
 //Fetch all tasks
+
+// GET /tasks?completed=true
 router.get('/tasks', auth, async (req, res) => {
   try {
-    //This can also be implemented using populate
-    //await req.user.populate('tasks')
-    //res.send(req.user.tasks)
-    
-    //Fetch all tasks that belong to this owner
-    const tasks = await Task.find({ owner: req.user._id })
+    //Alternate Way to find tasks associated with a user
+    //const tasks = await Task.find({ owner: req.user._id })
   
-    res.send(tasks)
+    const match = {}
+
+    //check if the request query has a paramater as completed
+    //If there is a no completed query then this will be a simple request to get all tasks associated with this user
+    if(req.query.completed) {
+      match.completed = req.query.completed === 'true'
+      //This will return boolean true if req.query.completed matches the string true
+      //This will return boolean false if req.query.completed does not match the string true
+    }
+    
+    //Populate tasks associated with the user based on completed query
+    await req.user.populate({
+      path: 'tasks',
+      match
+    })
+    res.send(req.user.tasks)
+    
   } catch(e) {
     res.status(500).send(e)
   }
