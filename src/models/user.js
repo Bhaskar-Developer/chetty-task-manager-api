@@ -73,9 +73,10 @@ userSchema.methods.toJSON = function() {
   const user = this //this here is the current instance of the user
   const userObject = user.toObject()
 
-  //delete the password and tokens array as we dont need to send them
+  //delete the password, tokens array and avatar as we don't want to send them
   delete userObject.tokens
   delete userObject.password
+  delete userObject.avatar
 
   return userObject
 }

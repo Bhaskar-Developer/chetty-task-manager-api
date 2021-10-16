@@ -2,6 +2,7 @@ const express = require('express')
 const multer = require('multer')
 const User = require('../models/user')
 const auth = require('../middleware/auth')
+const sharp = require('sharp')
 const router = new express.Router()
 
 //Add a new user
@@ -135,8 +136,10 @@ const upload = multer({
 })
 
 router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) => {
-  //save the profile image to user document
-  req.user.avatar = req.file.buffer
+  //Compress profile picture to size 250x250 and convert it to .png
+  const buffer = await sharp(req.file.buffer).resize({ width: 250, height:250 }).png().toBuffer()
+  req.user.avatar = buffer
+  //save the profile image buffer
   await req.user.save()
   res.send()
 }, (error, req, res, next) => {
