@@ -24,14 +24,10 @@ router.post('/tasks', auth, async (req, res) => {
 // GET /tasks?sortBy=createdAt:desc
 router.get('/tasks', auth, async (req, res) => {
   try {
-    //Alternate Way to find tasks associated with a user
-    //const tasks = await Task.find({ owner: req.user._id })
-  
     const match = {}
     const sort = {}
     
     //check if the request query has a paramater as completed
-    //If there is a no completed query then this will be a simple request to get all tasks associated with this user
     if(req.query.completed) {
       match.completed = req.query.completed === 'true'
       //This will return boolean true if req.query.completed matches the string true
@@ -41,11 +37,11 @@ router.get('/tasks', auth, async (req, res) => {
     //Sort the Data based on the timestamp in ascending or descending order
     //check if request query has a sortBy parameter
     if(req.query.sortBy) {
-      //break down the sortBy paramater string value into indivdual words string operation using split().  
+      //break down the sortBy paramater string value into two indivdual words using split() operation.  
       //These individual words will be stored as elements in the parts array
       
       const parts = req.query.sortBy.split(':') 
-      //The string is split when ':' is encountered
+      //The string is split into two when ':' is encountered
       
       //Using ternary operator to check if the value parts[1] is desc or asc
       //If desc then sort[parts[0]] will be -1
