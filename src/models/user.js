@@ -84,7 +84,7 @@ userSchema.methods.toJSON = function() {
 //Generate Auth Token for user when logging in
 userSchema.methods.generateAuthToken = async function() {
   const user = this //this here refers to the current user
-  const token = jwt.sign({ _id: user._id.toString() } , 'thisismycourse')
+  const token = jwt.sign({ _id: user._id.toString() } , process.env.JWT_SECRET)
   //append the generated token to the tokens array of the user and save it to DB
   user.tokens = user.tokens.concat({ token })
   await user.save()
