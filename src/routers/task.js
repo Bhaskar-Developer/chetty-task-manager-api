@@ -24,12 +24,12 @@ router.post('/tasks', auth, async (req, res) => {
 // GET /tasks?sortBy=createdAt:desc
 router.get('/tasks', auth, async (req, res) => {
   try {
-    const match = {}
-    const sort = {}
+    let match = {}
+    let sort = {}
     
     //check if the request query has a paramater as completed
     if(req.query.completed) {
-      match.completed = req.query.completed === 'true'
+      match[completed] = req.query.completed === 'true'
       //This will return boolean true if req.query.completed matches the string true
       //This will return boolean false if req.query.completed does not match the string true
     }
