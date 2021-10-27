@@ -24,41 +24,43 @@ router.post('/tasks', auth, async (req, res) => {
 // GET /tasks?sortBy=createdAt:desc
 router.get('/tasks', auth, async (req, res) => {
   try {
-    //let match = {}
-    //let sort = {}
-    
-    //check if the request query has a paramater as completed
-    // if(req.query.completed) {
-    //   match[completed] = req.query.completed === 'true'
-    //   //This will return boolean true if req.query.completed matches the string true
-    //   //This will return boolean false if req.query.completed does not match the string true
-    // }
+    const { completed, sortby, limit, skip } = req.query
 
-    //Sort the Data based on the timestamp in ascending or descending order
-    //check if request query has a sortBy parameter
-    //if(req.query.sortBy) {
-      //break down the sortBy paramater string value into two indivdual words using split() operation.  
-      //These individual words will be stored as elements in the parts array
-      
-      //const parts = req.query.sortBy.split(':') 
-      //The string is split into two when ':' is encountered
-      
-      //Using ternary operator to check if the value parts[1] is desc or asc
-      //If desc then sort[parts[0]] will be -1
-      //If asc then sort[parts[0]] will be 1 
-      //sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
-    //}
-    
-    //Populate tasks associated with the user based on completed query
+    // GET /tasks?completed=true
+    // Fetch only those tasks from DB that were competed
+    if(completed === 'true') {      
+      const tasks = await Task.find({
+        owner: req.user._id,
+        completed: true
+      })
+
+      return res.send(tasks)
+    }
+
+    // GET /tasks?completed=false
+    // Fetch only those tasks from DB that were not completed 
+    if(completed === 'false') {
+      const tasks = await Task.find({
+        owner: req.user._id,
+        completed: false
+      })
+
+      return res.send(tasks)
+    }
+        
+    //Limit and Skip  -- Yet to Implement
+
+    //Populate all tasks associated with the user
     await req.user.populate('tasks')
-      //path: 'tasks'
-      // match,
-      // options: {
-      //   limit: parseInt(req.query.limit),
-      //   skip: parseInt(req.query.skip),
-      //   sort
-      // }
-    //})
+
+    //Sort the tasks by the descending order of time they were created
+    if(sortby === 'desc') {
+      req.user.tasks.reverse()
+      return res.send(req.user.tasks)
+    }
+
+    //This will send all the tasks if there is no parameter passed to req.params
+    //This will also run if req.params.sortby=asc
     res.send(req.user.tasks)
 
   } catch(e) {
