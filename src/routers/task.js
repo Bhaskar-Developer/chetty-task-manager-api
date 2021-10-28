@@ -49,6 +49,12 @@ router.get('/tasks', auth, async (req, res) => {
     }
         
     //Limit and Skip  -- Yet to Implement
+    if(limit > -1 && skip > -1) {
+      const li = parseInt(limit)
+      const sk = parseInt(skip)
+      const tasks = await Task.find({ owner: req.user._id }).limit(li).skip(sk)
+      return res.send(tasks)
+    }
 
     //Populate all tasks associated with the user
     await req.user.populate('tasks')
