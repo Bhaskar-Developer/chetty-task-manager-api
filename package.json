@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A NodeJS application for managing tasks with user authentication and email notifications.",
   "main": "index.js",
-  "type":"module",
+  "type": "module",
   "engines": {
     "node": ">=14.0.0"
   },
@@ -30,6 +30,9 @@
     "validator": "^13.6.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.28.4",
+    "@babel/preset-env": "^7.28.3",
+    "babel-jest": "^30.2.0",
     "env-cmd": "^10.1.0",
     "jest": "^27.2.5",
     "nodemon": "^2.0.12",
