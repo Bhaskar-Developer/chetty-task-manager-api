@@ -1,8 +1,12 @@
 {
   "name": "task-manager-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "A NodeJS application for managing tasks with user authentication and email notifications.",
   "main": "index.js",
+  "type":"module",
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "scripts": {
     "start": "node src/index.js",
     "dev": "env-cmd -f ./config/dev.env nodemon src/index.js",
