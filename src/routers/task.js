@@ -1,7 +1,8 @@
-const express = require('express')
-const Task = require('../models/task')
-const auth = require('../middleware/auth')
-const router = new express.Router()
+import express from 'express'
+import Task from '../models/task.js'
+import auth from '../middleware/auth.js'
+
+const router = express.Router()
 
 //Add a new Task
 router.post('/tasks', auth, async (req, res) => {
@@ -136,4 +137,4 @@ router.delete('/tasks/:id', auth, async (req, res) => {
   }
 })
 
-module.exports = router
+export default router

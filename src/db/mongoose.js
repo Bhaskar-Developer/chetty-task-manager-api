@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 //Connect to Database
 mongoose.connect(process.env.MONGODB_URL, {

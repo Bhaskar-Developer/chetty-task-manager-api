@@ -1,10 +1,11 @@
-const express = require('express')
-const multer = require('multer')
-const User = require('../models/user')
-const auth = require('../middleware/auth')
-const sharp = require('sharp')
-const { sendWelcomeEmail, sendCancellationMail } = require('../emails/accounts')
-const router = new express.Router()
+import express from 'express'
+import multer from 'multer'
+import User from '../models/user.js'
+import auth from '../middleware/auth.js'
+import sharp from 'sharp'
+import { sendWelcomeEmail, sendCancellationMail } from '../emails/accounts.js'
+
+const router = express.Router()
 
 //Add a new user
 router.post('/users', async (req, res) => {
@@ -177,4 +178,4 @@ router.get('/users/:id/avatar', async (req, res) => {
   }
 })
 
-module.exports = router
+export default router
