@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  taskmanager-app:
+    container_name: taskmanager-app-dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports: 
+      - "3000:3000" 
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - taskmanager-mongo
+    networks:
+      - taskmanager-network
+
+  taskmanager-mongo:
+    container_name: taskmanager-mongo-dev
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - taskmanager-db-dev:/data/db
+    networks:
+      - taskmanager-network
+
+networks:
+  taskmanager-network:
+    driver: bridge
+
+volumes:
+  taskmanager-db-dev:        
+
+
+# Running the following command will start the containers/services in development environment in detached mode:
+# docker-compose -f docker-compose.dev.yaml up -d
+
+# To stop and remove the containers/services, use:
+# docker-compose -f docker-compose.dev.yaml down
+
+# To view logs of the services, use:
+# docker-compose -f docker-compose.dev.yaml logs -f
+
+# To rebuild the images after making changes to the Dockerfile or application code, use:
+# docker-compose -f docker-compose.dev.yaml up -d --build
