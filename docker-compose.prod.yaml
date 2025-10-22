@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  app:
+    container_name: taskmanager-app-prod
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      - "3000:3000"
+    depends_on:
+      - taskmanager-mongo
+    networks:
+      - taskmanager-net
+
+  taskmanager-mongo:
+    container_name: taskmanager-mongo-prod
+    image: mongo:5
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - taskmanager-db-prod:/data/db  
+    networks:
+      - taskmanager-net
+
+networks:
+  taskmanager-net:
+    driver: bridge
+
+volumes:
+  taskmanager-db-prod:   
